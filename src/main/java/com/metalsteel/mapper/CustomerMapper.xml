@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.metalsteel.mapper.CustomerMapper">
+    <select id="findAll" resultType="Customer">
+        SELECT * FROM customer
+    </select>
+    <insert id="addCustomer" parameterType="Customer">
+      INSERT INTO customer VALUES(DEFAULT,#{name},#{sex},#{age},#{birthday},#{address},#{mark})
+    </insert>
+    <update id="updateCustomer" parameterType="Customer">
+        UPDATE customer SET name = #{name},sex = #{sex},age = #{age},birthday = #{birthday},address = #{address},mark = #{mark} WHERE id = #{id}
+    </update>
+    <delete id="deleteCustomer" parameterType="int">
+        DELETE FROM customer WHERE id = #{id}
+    </delete>
+    <select id="retrieve" parameterType="CustomerAO" resultType="Customer">
+        SELECT * FROM customer
+        <where>
+            <if test="name!=null">
+                AND  name LIKE '%${name}%'
+            </if>
+            <if test="sex!=null">
+                AND sex = #{sex}
+            </if>
+            <if test="age!=null and maxAge !=null">
+                AND age BETWEEN #{age} AND #{maxAge}
+            </if>
+            <if test="birthday!=null and maxBirthday!=null">
+                AND birthday BETWEEN #{birthday} AND #{maxBirthday}
+            </if>
+            <if test="address!=null">
+                AND address LIKE '%${address}%'
+            </if>
+            <if test="mark!=null">
+                AND mark LIKE '%${mark}%'
+            </if>
+        </where>
+    </select>
+</mapper>
